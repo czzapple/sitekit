@@ -1,15 +1,32 @@
-HMS Site SDK for Android demo
+HMS Site Kit for Android
 ===============================
 ![Apache-2.0](https://img.shields.io/badge/license-Apache-blue)
 
 
 Introduction
 ------------
-This demo demonstrates the use of [HMS Site SDK for Android](https://developer.huawei.com/consumer/cn/doc/development/HMS-Guides/hms-site-business-introduction).
+With HUAWEI Site Kit, your app can provide users with convenient and secure access to diverse, place-related services.
+
+HUAWEI Site Kit provides the following core capabilities you need to quickly build apps with which your users can explore the world around them:
+
+- Place search: Returns a place list based on keywords entered by the user.
+- Nearby place search: Searches for nearby places based on the current location of the user's device.
+- Place details: Searches for details about a place.
+- Search suggestion: Returns a list of place suggestions.
 
 
 Getting Started
 ---------------
+For more development details, please refer to the following link:
+
+Development Guide: https://developer.huawei.com/consumer/en/doc/development/HMS-Guides/hms-site-business-introduction
+
+API References: https://developer.huawei.com/consumer/en/doc/development/HMS-References/hms-site-addressDetail
+
+
+
+We also provide an example to demonstrates the use of Site Sdk for Android.
+
 This demo uses the Gradle build system.
 
 First download the demo by cloning this repository or downloading an archived snapshot.
@@ -20,9 +37,12 @@ You can use the "gradlew build" command to build the project directly.
 
 Support
 -------
-HMS developer guide: https://developer.huawei.com/consumer/cn/doc/development/HMS-Guides/hms-site-business-introduction
+If you have any questions or suggetions during use, please feel to ask questions or communicate here: https://github.com/huaweimaps/sitekit/issues
 
 License
 -------
-[LICENSE](https://github.com/huaweimaps/sitekit/blob/master/LICENSE)
+Copyright 2020 Huawei, Inc.
 
+You are licensed under the Apache License version 2.0; you must not use this file unless you comply with the license. You can get a licensed copy at:
+
+http://www.apache.org/licenses/
