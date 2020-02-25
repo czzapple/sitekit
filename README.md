@@ -41,8 +41,7 @@ If you have any questions or suggetions during use, please feel to ask questions
 
 License
 -------
-Copyright 2020 Huawei, Inc.
+Apache License version 2.0;
 
-You are licensed under the Apache License version 2.0; you must not use this file unless you comply with the license. You can get a licensed copy at:
+You can get a licensed copy at: https://github.com/huaweimaps/sitekit/blob/master/LICENSE
 
-http://www.apache.org/licenses/
