@@ -25,13 +25,15 @@ API References: https://developer.huawei.com/consumer/en/doc/development/HMS-Ref
 
 
 
+
+
 We also provide an example to demonstrates the use of Site Sdk for Android.
 
 This demo uses the Gradle build system.
 
 First download the demo by cloning this repository or downloading an archived snapshot.
 
-In Android Studio, use the "Open an existing Android Studio project", and select the directory of site-demo.
+In Android Studio, use the "Open an existing Android Studio project", and select the directory of site-sample.
 
 You can use the "gradlew build" command to build the project directly.
 
