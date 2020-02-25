@@ -72,9 +72,11 @@ public class DetailSearchActivity extends AppCompatActivity implements View.OnCl
             switch (msg.what) {
                 case 0:
                     sitePhotoView.setImageBitmap(bitmap);
+                    sitePhotoView.setVisibility(View.VISIBLE);
                     break;
                 case 1:
                     sitePhotoView.setImageBitmap(null);
+                    sitePhotoView.setVisibility(View.INVISIBLE);
                     break;
                 default:
                     break;
@@ -100,6 +102,7 @@ public class DetailSearchActivity extends AppCompatActivity implements View.OnCl
         findViewById(R.id.button_detail_search).setOnClickListener(this);
         resultTextView = findViewById(R.id.response_detail_search);
         sitePhotoView = findViewById(R.id.search_detail_site_photo_image);
+        sitePhotoView.setVisibility(View.INVISIBLE);
     }
 
     @Override
