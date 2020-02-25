@@ -23,9 +23,7 @@ Development Guide: https://developer.huawei.com/consumer/en/doc/development/HMS-
 
 API References: https://developer.huawei.com/consumer/en/doc/development/HMS-References/hms-site-addressDetail
 
-
-
-
+&nbsp; 
 
 We also provide an example to demonstrates the use of Site Sdk for Android.
 
