@@ -26,11 +26,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
-/**
- * 功能描述
- *
- * @since 2020-01-03
- */
 public class CheckboxSpinner {
 
     @ColorInt
@@ -80,12 +75,12 @@ public class CheckboxSpinner {
         listView.setOnItemClickListener(adapter);
 
         AlertDialog alertDialog =
-            new AlertDialog.Builder(context).setTitle("POI Types").setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    poiTypeTextView.setText(CheckboxSpinner.this.getSelectedString());
-                }
-            }).setView(listView).show();
+                new AlertDialog.Builder(context).setTitle("POI Types").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        poiTypeTextView.setText(CheckboxSpinner.this.getSelectedString());
+                    }
+                }).setView(listView).show();
 
         alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setBackgroundResource(R.drawable.button_style);
         alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(WHITE);
@@ -122,7 +117,7 @@ public class CheckboxSpinner {
     }
 
     private static class LocationTypeItemArrayAdapter extends ArrayAdapter<LocationTypeItem>
-        implements AdapterView.OnItemClickListener {
+            implements AdapterView.OnItemClickListener {
 
         public LocationTypeItemArrayAdapter(Context context, List<LocationTypeItem> placeFields) {
             super(context, android.R.layout.simple_list_item_multiple_choice, placeFields);

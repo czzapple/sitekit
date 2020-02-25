@@ -85,7 +85,7 @@ public class TextSearchActivity extends AppCompatActivity {
         radiusInput = findViewById(R.id.edit_text_text_search_radius);
         poiTypeSpinner = findViewById(R.id.spinner_text_search_poitype);
         poiTypeSpinner.setAdapter(
-            new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, Arrays.asList(LocationType.values())));
+                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, Arrays.asList(LocationType.values())));
 
         Switch usePOITypeSwitch = findViewById(R.id.switch_text_search_poitype);
         usePOITypeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -115,7 +115,7 @@ public class TextSearchActivity extends AppCompatActivity {
         Log.d(TAG, "execTextSearch: " + this);
         Log.d(TAG, "execTextSearch: " + getApplicationContext());
         Log.d(TAG, "execTextSearch: "
-            + (getApplicationContext() == null ? "" : getApplicationContext().getApplicationContext()));
+                + (getApplicationContext() == null ? "" : getApplicationContext().getApplicationContext()));
         String query = queryInput.getText().toString();
         if (TextUtils.isEmpty(query)) {
             resultTextView.setText("Error : Query is empty!");
@@ -186,7 +186,7 @@ public class TextSearchActivity extends AppCompatActivity {
             public void onSearchResult(TextSearchResponse results) {
                 List<Site> siteList;
                 if (results == null || results.getTotalCount() <= 0 || (siteList = results.getSites()) == null
-                    || siteList.size() <= 0) {
+                        || siteList.size() <= 0) {
                     resultTextView.setText("Result is Empty!");
                     return;
                 }
@@ -204,13 +204,13 @@ public class TextSearchActivity extends AppCompatActivity {
                     poi = site.getPoi();
                     viewport = site.getViewport();
                     response.append(String.format(
-                        "[%s] siteId: '%s', name: %s, formatAddress: %s, country: %s, countryCode: %s, location: %s, poiTypes: %s, viewport is %s \r\n",
-                        "" + (count++), site.getSiteId(), site.getName(), site.getFormatAddress(),
-                        (addressDetail == null ? "" : addressDetail.getCountry()),
-                        (addressDetail == null ? "" : addressDetail.getCountryCode()),
-                        (location == null ? "" : (location.getLat() + "," + location.getLng())),
-                        (poi == null ? "" : Arrays.toString(poi.getPoiTypes())),
-                        (viewport == null ? "" : viewport.getNortheast() + "," + viewport.getSouthwest())));
+                            "[%s] siteId: '%s', name: %s, formatAddress: %s, country: %s, countryCode: %s, location: %s, poiTypes: %s, viewport is %s \r\n",
+                            "" + (count++), site.getSiteId(), site.getName(), site.getFormatAddress(),
+                            (addressDetail == null ? "" : addressDetail.getCountry()),
+                            (addressDetail == null ? "" : addressDetail.getCountryCode()),
+                            (location == null ? "" : (location.getLat() + "," + location.getLng())),
+                            (poi == null ? "" : Arrays.toString(poi.getPoiTypes())),
+                            (viewport == null ? "" : viewport.getNortheast() + "," + viewport.getSouthwest())));
                 }
                 resultTextView.setText(response.toString());
                 Log.d(TAG, "onTextSearchResult: " + response.toString());

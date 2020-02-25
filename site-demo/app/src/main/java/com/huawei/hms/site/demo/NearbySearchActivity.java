@@ -45,13 +45,44 @@ import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class NearbySearchActivity extends AppCompatActivity implements View.OnClickListener {
-    private SearchService searchService;
-
     Spinner poiTypeSpinner;
-
     EditText pageIndexInput;
-
     EditText pageSizeInput;
+    SearchResultListener searchResultListener = new SearchResultListener<NearbySearchResponse>() {
+        @Override
+        public void onSearchResult(NearbySearchResponse results) {
+            StringBuilder stringBuilder = new StringBuilder();
+            if (results != null) {
+                List<Site> sites = results.getSites();
+                if (sites != null && sites.size() > 0) {
+                    int count = 1;
+                    for (Site site : sites) {
+                        AddressDetail addressDetail = site.getAddress();
+                        Coordinate location = site.getLocation();
+                        Poi poi = site.getPoi();
+                        CoordinateBounds viewport = site.getViewport();
+                        stringBuilder.append(String.format(
+                                "[%s] siteId: '%s', name: %s, formatAddress: %s, country: %s, countryCode: %s, location: %s, poiTypes: %s, viewport is %s \n\n",
+                                "" + (count++), site.getSiteId(), site.getName(), site.getFormatAddress(),
+                                (addressDetail == null ? "" : addressDetail.getCountry()),
+                                (addressDetail == null ? "" : addressDetail.getCountryCode()),
+                                (location == null ? "" : (location.getLat() + "," + location.getLng())),
+                                (poi == null ? "" : Arrays.toString(poi.getPoiTypes())),
+                                (viewport == null ? "" : viewport.getNortheast() + "," + viewport.getSouthwest())));
+                    }
+                } else {
+                    stringBuilder.append("0 results");
+                }
+            }
+            showSuccessResult(stringBuilder.toString());
+        }
+
+        @Override
+        public void onSearchError(SearchStatus status) {
+            showFailResult("", status.getErrorCode(), status.getErrorMessage());
+        }
+    };
+    private SearchService searchService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +95,7 @@ public class NearbySearchActivity extends AppCompatActivity implements View.OnCl
 
         poiTypeSpinner = findViewById(R.id.spinner_nearby_search_poitype);
         poiTypeSpinner.setAdapter(
-            new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, Arrays.asList(LocationType.values())));
+                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, Arrays.asList(LocationType.values())));
 
         Switch usePOITypeSwitch = findViewById(R.id.switch_nearby_search_poitype);
         usePOITypeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -80,41 +111,6 @@ public class NearbySearchActivity extends AppCompatActivity implements View.OnCl
         poiTypeSpinner.setEnabled(false);
     }
 
-    SearchResultListener searchResultListener = new SearchResultListener<NearbySearchResponse>() {
-        @Override
-        public void onSearchResult(NearbySearchResponse results) {
-            StringBuilder stringBuilder = new StringBuilder();
-            if (results != null) {
-                List<Site> sites = results.getSites();
-                if (sites != null && sites.size() > 0) {
-                    int count = 1;
-                    for (Site site : sites) {
-                        AddressDetail addressDetail = site.getAddress();
-                        Coordinate location = site.getLocation();
-                        Poi poi = site.getPoi();
-                        CoordinateBounds viewport = site.getViewport();
-                        stringBuilder.append(String.format(
-                            "[%s] siteId: '%s', name: %s, formatAddress: %s, country: %s, countryCode: %s, location: %s, poiTypes: %s, viewport is %s \n\n",
-                            "" + (count++), site.getSiteId(), site.getName(), site.getFormatAddress(),
-                            (addressDetail == null ? "" : addressDetail.getCountry()),
-                            (addressDetail == null ? "" : addressDetail.getCountryCode()),
-                            (location == null ? "" : (location.getLat() + "," + location.getLng())),
-                            (poi == null ? "" : Arrays.toString(poi.getPoiTypes())),
-                            (viewport == null ? "" : viewport.getNortheast() + "," + viewport.getSouthwest())));
-                    }
-                } else {
-                    stringBuilder.append("0 results");
-                }
-            }
-            showSuccessResult(stringBuilder.toString());
-        }
-
-        @Override
-        public void onSearchError(SearchStatus status) {
-            showFailResult("", status.getErrorCode(), status.getErrorMessage());
-        }
-    };
-
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.search_nearby_button) {
@@ -127,12 +123,12 @@ public class NearbySearchActivity extends AppCompatActivity implements View.OnCl
 
         String locationLatitude = ((TextView) findViewById(R.id.nearby_search_location_lat_input)).getText().toString();
         String locationLongitude =
-            ((TextView) findViewById(R.id.nearby_search_location_lng_input)).getText().toString();
+                ((TextView) findViewById(R.id.nearby_search_location_lng_input)).getText().toString();
         Double lat;
         Double lng;
         if (!TextUtils.isEmpty(locationLatitude) || !TextUtils.isEmpty(locationLongitude)) {
             if ((lat = Utils.parseDouble(locationLatitude)) == null
-                || (lng = Utils.parseDouble(locationLongitude)) == null) {
+                    || (lng = Utils.parseDouble(locationLongitude)) == null) {
                 showFailResult("Location is invalid!", "", "");
                 return;
             }
@@ -161,7 +157,7 @@ public class NearbySearchActivity extends AppCompatActivity implements View.OnCl
         }
 
         String politicalView = ((TextView) findViewById(R.id.nearby_search_politicalview_input)).getText().toString();
-       if (!TextUtils.isEmpty(politicalView)) {
+        if (!TextUtils.isEmpty(politicalView)) {
             request.setPoliticalView(politicalView);
         }
 

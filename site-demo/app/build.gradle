@@ -39,19 +39,6 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
-
-    android.applicationVariants.all { variant ->
-        def buildTypeName = variant.buildType.name
-        def fileName = "demo.apk"
-        variant.outputs.all {
-            if ("release" == buildTypeName) {
-                fileName = "Site-demo-release.apk"
-            } else if ("debug" == buildTypeName) {
-                fileName = "Site-demo-debug.apk"
-            }
-            outputFileName = fileName
-        }
-    }
 }
 
 dependencies {

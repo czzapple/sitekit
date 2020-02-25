@@ -28,11 +28,7 @@ public class Utils {
     public static boolean isNumber(String string) {
         Pattern p = Pattern.compile("[0-9]*");
         Matcher m = p.matcher(string);
-        if (m.matches()) {
-            return true;
-        } else {
-            return false;
-        }
+        return m.matches();
     }
 
     public static Double parseDouble(String string) {

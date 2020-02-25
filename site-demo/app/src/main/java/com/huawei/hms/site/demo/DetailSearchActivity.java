@@ -66,7 +66,22 @@ public class DetailSearchActivity extends AppCompatActivity implements View.OnCl
     ImageView sitePhotoView;
 
     Bitmap bitmap = null;
-
+    public Handler uiHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    sitePhotoView.setImageBitmap(bitmap);
+                    break;
+                case 1:
+                    sitePhotoView.setImageBitmap(null);
+                    break;
+                default:
+                    break;
+            }
+            return false;
+        }
+    });
     private SearchService searchService;
 
     @Override
@@ -129,13 +144,13 @@ public class DetailSearchActivity extends AppCompatActivity implements View.OnCl
                 StringBuilder response = new StringBuilder("\n");
                 response.append("success\n");
                 response.append(String.format(
-                    "siteId: '%s', Name: %s, FormatAddress: %s, Country: %s, CountryCode: %s, Location: %s, PoiTypes: %s, Viewport: %s \r\n",
-                    site.getSiteId(), site.getName(), site.getFormatAddress(),
-                    (addressDetail == null ? "" : addressDetail.getCountry()),
-                    (addressDetail == null ? "" : addressDetail.getCountryCode()),
-                    (location == null ? "" : (location.getLat() + "," + location.getLng())),
-                    (poi == null ? "" : Arrays.toString(poi.getPoiTypes())),
-                    (viewport == null ? "" : viewport.getNortheast() + "," + viewport.getSouthwest())));
+                        "siteId: '%s', Name: %s, FormatAddress: %s, Country: %s, CountryCode: %s, Location: %s, PoiTypes: %s, Viewport: %s \r\n",
+                        site.getSiteId(), site.getName(), site.getFormatAddress(),
+                        (addressDetail == null ? "" : addressDetail.getCountry()),
+                        (addressDetail == null ? "" : addressDetail.getCountryCode()),
+                        (location == null ? "" : (location.getLat() + "," + location.getLng())),
+                        (poi == null ? "" : Arrays.toString(poi.getPoiTypes())),
+                        (viewport == null ? "" : viewport.getNortheast() + "," + viewport.getSouthwest())));
 
                 Switch displaySwitch = findViewById(R.id.detail_search_photo_switch);
                 String[] photoUrls = poi != null ? poi.getPhotoUrls() : null;
@@ -146,9 +161,9 @@ public class DetailSearchActivity extends AppCompatActivity implements View.OnCl
                     } catch (Exception e) {
                         e.printStackTrace();
                         resultTextView.setText(response.append("**********************")
-                            .append("\r\n")
-                            .append("But Get Photo Error : " + e.getMessage())
-                            .toString());
+                                .append("\r\n")
+                                .append("But Get Photo Error : " + e.getMessage())
+                                .toString());
                         return;
                     }
                 } else {
@@ -167,23 +182,6 @@ public class DetailSearchActivity extends AppCompatActivity implements View.OnCl
 
         searchService.detailSearch(request, resultListener);
     }
-
-    public Handler uiHandler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            switch (msg.what) {
-                case 0:
-                    sitePhotoView.setImageBitmap(bitmap);
-                    break;
-                case 1:
-                    sitePhotoView.setImageBitmap(null);
-                    break;
-                default:
-                    break;
-            }
-            return false;
-        }
-    });
 
     private void displayPhoto(String photoUrl) {
         Request request = new Request.Builder().url(photoUrl).get().build();

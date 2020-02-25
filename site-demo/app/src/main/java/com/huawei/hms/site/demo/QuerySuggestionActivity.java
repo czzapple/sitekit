@@ -42,8 +42,45 @@ import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class QuerySuggestionActivity extends AppCompatActivity implements View.OnClickListener {
-    private SearchService searchService;
+    SearchResultListener searchResultListener = new SearchResultListener<QuerySuggestionResponse>() {
+        @Override
+        public void onSearchResult(QuerySuggestionResponse results) {
+            ((TextView) findViewById(R.id.query_suggestion_result_status)).setText("success");
+            TextView resultView = findViewById(R.id.query_suggestion_result_text);
+            StringBuilder stringBuilder = new StringBuilder();
+            if (results != null) {
+                List<Site> sites = results.getSites();
+                if (sites != null && sites.size() > 0) {
+                    int count = 1;
+                    for (Site site : sites) {
+                        AddressDetail addressDetail = site.getAddress();
+                        Coordinate location = site.getLocation();
+                        Poi poi = site.getPoi();
+                        CoordinateBounds viewport = site.getViewport();
+                        stringBuilder.append(String.format(
+                                "[%s] siteId: '%s', name: %s, formatAddress: %s, country: %s, countryCode: %s, location: %s, distance: %s, poiTypes: %s, viewport is %s \n\n",
+                                "" + (count++), site.getSiteId(), site.getName(), site.getFormatAddress(),
+                                (addressDetail == null ? "" : addressDetail.getCountry()),
+                                (addressDetail == null ? "" : addressDetail.getCountryCode()),
+                                (location == null ? "" : (location.getLat() + "," + location.getLng())), site.getDistance(),
+                                (poi == null ? "" : Arrays.toString(poi.getPoiTypes())),
+                                (viewport == null ? "" : viewport.getNortheast() + "," + viewport.getSouthwest())));
+                    }
+                } else {
+                    stringBuilder.append("0 results");
+                }
+            }
+            resultView.setText(stringBuilder);
+        }
 
+        @Override
+        public void onSearchError(SearchStatus status) {
+            ((TextView) findViewById(R.id.query_suggestion_result_text)).setText("");
+            ((TextView) findViewById(R.id.query_suggestion_result_status))
+                    .setText("failed " + status.getErrorCode() + " " + status.getErrorMessage());
+        }
+    };
+    private SearchService searchService;
     private CheckboxSpinner locationTypeSpinner;
 
     @Override
@@ -64,47 +101,8 @@ public class QuerySuggestionActivity extends AppCompatActivity implements View.O
         poiTypesInput.setEnabled(false);
 
         locationTypeSpinner =
-            new CheckboxSpinner((Switch) findViewById(R.id.switch_query_suggestion_poitype), poiTypesInput, poiTypes);
+                new CheckboxSpinner(findViewById(R.id.switch_query_suggestion_poitype), poiTypesInput, poiTypes);
     }
-
-    SearchResultListener searchResultListener = new SearchResultListener<QuerySuggestionResponse>() {
-        @Override
-        public void onSearchResult(QuerySuggestionResponse results) {
-            ((TextView) findViewById(R.id.query_suggestion_result_status)).setText("success");
-            TextView resultView = findViewById(R.id.query_suggestion_result_text);
-            StringBuilder stringBuilder = new StringBuilder();
-            if (results != null) {
-                List<Site> sites = results.getSites();
-                if (sites != null && sites.size() > 0) {
-                    int count = 1;
-                    for (Site site : sites) {
-                        AddressDetail addressDetail = site.getAddress();
-                        Coordinate location = site.getLocation();
-                        Poi poi = site.getPoi();
-                        CoordinateBounds viewport = site.getViewport();
-                        stringBuilder.append(String.format(
-                            "[%s] siteId: '%s', name: %s, formatAddress: %s, country: %s, countryCode: %s, location: %s, distance: %s, poiTypes: %s, viewport is %s \n\n",
-                            "" + (count++), site.getSiteId(), site.getName(), site.getFormatAddress(),
-                            (addressDetail == null ? "" : addressDetail.getCountry()),
-                            (addressDetail == null ? "" : addressDetail.getCountryCode()),
-                            (location == null ? "" : (location.getLat() + "," + location.getLng())), site.getDistance(),
-                            (poi == null ? "" : Arrays.toString(poi.getPoiTypes())),
-                            (viewport == null ? "" : viewport.getNortheast() + "," + viewport.getSouthwest())));
-                    }
-                } else {
-                    stringBuilder.append("0 results");
-                }
-            }
-            resultView.setText(stringBuilder);
-        }
-
-        @Override
-        public void onSearchError(SearchStatus status) {
-            ((TextView) findViewById(R.id.query_suggestion_result_text)).setText("");
-            ((TextView) findViewById(R.id.query_suggestion_result_status))
-                .setText("failed " + status.getErrorCode() + " " + status.getErrorMessage());
-        }
-    };
 
     @Override
     public void onClick(View view) {
@@ -119,20 +117,20 @@ public class QuerySuggestionActivity extends AppCompatActivity implements View.O
         String radius = ((TextView) findViewById(R.id.query_suggestion_radius_input)).getText().toString();
         String language = ((TextView) findViewById(R.id.query_suggestion_language_input)).getText().toString();
         String locationLatitude =
-            ((TextView) findViewById(R.id.query_suggestion_location_lat_input)).getText().toString();
+                ((TextView) findViewById(R.id.query_suggestion_location_lat_input)).getText().toString();
         String locationLongitude =
-            ((TextView) findViewById(R.id.query_suggestion_location_lng_input)).getText().toString();
+                ((TextView) findViewById(R.id.query_suggestion_location_lng_input)).getText().toString();
         String countryCode = ((TextView) findViewById(R.id.query_suggestion_country_code_input)).getText().toString();
         String politicalView =
-            ((TextView) findViewById(R.id.query_suggestion_politicalview_input)).getText().toString();
+                ((TextView) findViewById(R.id.query_suggestion_politicalview_input)).getText().toString();
         String northeastLatText =
-            ((TextView) findViewById(R.id.query_suggestion_bounds_northeast_lat_input)).getText().toString();
+                ((TextView) findViewById(R.id.query_suggestion_bounds_northeast_lat_input)).getText().toString();
         String northeastLngText =
-            ((TextView) findViewById(R.id.query_suggestion_bounds_northeast_lng_input)).getText().toString();
+                ((TextView) findViewById(R.id.query_suggestion_bounds_northeast_lng_input)).getText().toString();
         String southwestLatText =
-            ((TextView) findViewById(R.id.query_suggestion_bounds_southwest_lat_input)).getText().toString();
+                ((TextView) findViewById(R.id.query_suggestion_bounds_southwest_lat_input)).getText().toString();
         String southwestLngText =
-            ((TextView) findViewById(R.id.query_suggestion_bounds_southwest_lng_input)).getText().toString();
+                ((TextView) findViewById(R.id.query_suggestion_bounds_southwest_lng_input)).getText().toString();
 
         if (!TextUtils.isEmpty(language)) {
             request.setLanguage(language);
@@ -143,7 +141,7 @@ public class QuerySuggestionActivity extends AppCompatActivity implements View.O
         if (!TextUtils.isEmpty(countryCode)) {
             request.setCountryCode(countryCode);
         }
-       if (!TextUtils.isEmpty(politicalView)) {
+        if (!TextUtils.isEmpty(politicalView)) {
             request.setPoliticalView(politicalView);
         }
         Integer radiusValue;
