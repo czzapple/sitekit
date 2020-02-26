@@ -17,7 +17,7 @@ HUAWEI Site Kit provides the following core capabilities you need to quickly bui
 
 Getting Started
 ---------------
-For more development details, please refer to the following link:
+For more development guidance, please refer to the links below:
 
 Development Guide: https://developer.huawei.com/consumer/en/doc/development/HMS-Guides/hms-site-business-introduction
 
@@ -37,7 +37,7 @@ You can use the "gradlew build" command to build the project directly.
 
 Support
 -------
-If you have any questions or suggetions during use, welcome suggestions or communicate here: https://github.com/huaweimaps/sitekit/issues
+If you have any questions or suggestions during use, welcome suggestions or communicate here: https://github.com/huaweimaps/sitekit/issues
 
 License
 -------
